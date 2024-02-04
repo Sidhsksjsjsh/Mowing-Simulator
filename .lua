@@ -4,10 +4,12 @@ local T1 = wndw:Tab("Main")
 local T2 = wndw:Tab("Mower Upgrader")
 local T3 = wndw:Tab("Train")
 local T4 = wndw:Tab("Hatch")
+local T5 = wndw:Tab("Teleport")
 
 local workspace = game:GetService("Workspace")
 local egg = {}
 local bike = {}
+local area = {"1","2","3","4","5"}
 
 lib:AddTable(workspace["Active"]["Bikes"],bike)
 lib:AddTable(workspace["Active"]["Eggs"],egg)
@@ -38,6 +40,22 @@ T1:Toggle("Auto claim gifts",false,function(value)
         game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["RewardService"]["RE"]["ClaimGift"]:FireServer(10)
         game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["RewardService"]["RE"]["ClaimGift"]:FireServer(11)
         game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["RewardService"]["RE"]["ClaimGift"]:FireServer(12)
+  end
+end)
+
+T1:Toggle("Auto rebirth",false,function(value)
+    _G.reb = value
+    while wait() do
+      if _G.reb == false then break end
+        game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["RebirthService"]["RE"]["Rebirth"]:FireServer()
+  end
+end)
+
+T1:Toggle("Auto unlock next area",false,function(value)
+    _G.una = value
+    while wait() do
+      if _G.una == false then break end
+        game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["AreaService"]["RE"]["UnlockArea"]:FireServer()
   end
 end)
 
@@ -87,4 +105,12 @@ T4:Toggle("Auto hatch",false,function(value)
       if _G.egh == false then break end
         game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["PetService"]["RF"]["Hatch"]:InvokeServer(workspace["Active"]["Eggs"][_G.eggers],1)
   end
+end)
+
+T5:Dropdown("Select area",area,function(value)
+    _G.areas = tonumber(value)
+end)
+
+T5:Button("Teleport",function()
+        game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["AreaService"]["RE"]["SetArea"]:FireServer(_G.areas)
 end)
